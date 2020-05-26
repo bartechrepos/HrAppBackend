@@ -23,4 +23,5 @@ Route::post('EmployeeAttend','HRCtrl@logAttend');
 Route::get('VacationTypes','HRCtrl@getVacationsTypes');
 Route::get('Company/Branches','CompanyCtrl@getBranches');
 Route::get('Company/AutodetectBranch','CompanyCtrl@autoDetectBranch');
+Route::get('Settings','SettingCtrl@index');
 Route::post('RequestVacation','HRCtrl@requestVacation');
