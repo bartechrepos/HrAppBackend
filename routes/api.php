@@ -19,9 +19,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('Employees','EmployeeCtrl@index');
-Route::post('EmployeeAttend','HRCtrl@logAttend');
-Route::get('VacationTypes','HRCtrl@getVacationsTypes');
+
+Route::get('Vacation/Types','HRCtrl@getVacationsTypes');
+
 Route::get('Company/Branches','CompanyCtrl@getBranches');
 Route::get('Company/AutodetectBranch','CompanyCtrl@autoDetectBranch');
-Route::get('Settings','SettingCtrl@index');
-Route::post('RequestVacation','HRCtrl@requestVacation');
+
+Route::get('APP/Settings','SettingCtrl@index');
+
+Route::post('HR/Attend','HRCtrl@logAttend');
+Route::post('HR/RequestVacation','HRCtrl@requestVacation');

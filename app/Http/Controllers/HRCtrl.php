@@ -21,24 +21,34 @@ class HRCtrl extends Controller
         return response()->json($ok , 200);
     }
 
-
-    public function getVacationsTypes()
+    /**
+     * INPUT
+     * company
+     */
+    public function getVacationsTypes(Request $request)
     {
         $results = DB::select('EXEC SP_HR_VacationsType_FindAll @Company=:Company ;',
         [
-            ':Company' => 1
+            ':Company' => $request->input('company')
         ]);
         $collection = collect($results);
         $mapped = $collection->map(function($item, $key) {
-            return ['typeNameAr'=> $item->ArabicDescription];
+            return [
+                'typeNameAr'=> $item->ArabicDescription,
+                'type' => $item->GUID
+            ];
         });
         return response()->json($mapped , 200);
     }
 
-    public function requestVacation()
+    /**
+     * INPUT
+     * phoneNo
+     */
+    public function requestVacation(Request $request)
     {
         $results = DB::select("
-        EXEC [dbo].[SP_HR_Vacations_Insert] @PhoneNumber = '0100',
+        EXEC [dbo].[SP_HR_Vacations_Insert] @PhoneNumber =  '{$request->input('phoneNo')}',
         @Type = :Type,
         @Dayes = :Dayes,
         @SerialNo = '',
