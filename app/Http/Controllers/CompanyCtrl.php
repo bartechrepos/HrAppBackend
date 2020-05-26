@@ -9,12 +9,16 @@ use stdClass;
 class CompanyCtrl extends Controller
 {
 
-    public function getBranches()
+    /**
+     * INPUT
+     * company: companyID
+     */
+    public function getBranches(Request $request)
     {
         $results = DB::select(
             'EXEC SP_Branch_FindAll @CompanyId=:CompanyId ;',
             [
-                ':CompanyId' => 1
+                ':CompanyId' => $request->input('company')
             ]
         );
         $collection = collect($results);
@@ -28,14 +32,18 @@ class CompanyCtrl extends Controller
         return response()->json($mapped, 200);
     }
 
-    public function autoDetectBranch()
+    /**
+     * INPUT
+     * company: companyID
+     */
+    public function autoDetectBranch(Request $request)
     {
         // echo distance(30.055760, 31.357623, 30.055073, 31.358675, "K") . " Kilometers<br>"; // 0.126 K
         // echo distance(30.055760, 31.357623, 30.055036, 31.361960, "K") . " Kilometers<br>"; // 0.425 K
         $results = DB::select(
             'EXEC SP_Branch_FindAll @CompanyId=:CompanyId ;',
             [
-                ':CompanyId' => 1
+                ':CompanyId' => $request->input('company')
             ]
         );
         $collection = collect($results);

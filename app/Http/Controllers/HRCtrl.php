@@ -7,16 +7,22 @@ use Illuminate\Support\Facades\DB;
 
 class HRCtrl extends Controller
 {
-    public function logAttend()
+    /**
+     * INPUT
+     * phoneNo
+     * inOut
+     * date
+     */
+    public function logAttend(Request $request)
     {
         $ok = DB::update("EXEC SP_HR_EmployeeAttendanceLog_Insert
         @PhoneNumber=:PhoneNumber,
         @InOutMode=:InOutMode,
         @Date=:Date ;",
         [
-            ':PhoneNumber' => '01101',
-            ':InOutMode' => 0,
-            ':Date' => '2020-05-12'
+            ':PhoneNumber' => $request->input('phoneNo'), //'01101',
+            ':InOutMode' => $request->input('inOut'), // 0 / 1,
+            ':Date' => $request->input('date') // '2020-05-12'
         ]);
         return response()->json($ok , 200);
     }
@@ -44,6 +50,10 @@ class HRCtrl extends Controller
     /**
      * INPUT
      * phoneNo
+     * type : Vacation type GUID
+     * days
+     * fromDate
+     * toDate
      */
     public function requestVacation(Request $request)
     {
