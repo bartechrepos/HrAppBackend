@@ -15,6 +15,7 @@
                     @endif
 
                     You are logged in!
+                    <div id="add-company"></div>
                 </div>
             </div>
         </div>

@@ -11,6 +11,16 @@ class CompanyCtrl extends Controller
 
     /**
      * INPUT
+     * name
+     */
+    public function addCompany(Request $request)
+    {
+        // GET APP MODE
+        echo env('APP_MODE','');
+    }
+
+    /**
+     * INPUT
      * company: companyID
      */
     public function getBranches(Request $request)

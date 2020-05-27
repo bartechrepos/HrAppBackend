@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('Employees','EmployeeCtrl@index');
 
+Route::post('Company/AddCompany','CompanyCtrl@AddCompany');
 Route::get('Company/Branches','CompanyCtrl@getBranches');
 Route::get('Company/AutodetectBranch','CompanyCtrl@autoDetectBranch');
 
