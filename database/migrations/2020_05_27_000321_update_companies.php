@@ -15,9 +15,10 @@ class UpdateCompanies extends Migration
     {
         //
         Schema::connection('mysql')->table('companies', function (Blueprint $table) {
-            $table->renameColumn('name','ar_name');
-            $table->string('ar_name')->nullable();
-            $table->string('ar_description')->nullable();
+
+            $table->string('en_name')->nullable();
+            $table->string('en_description')->nullable();
+
         });
     }
 

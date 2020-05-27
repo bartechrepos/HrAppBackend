@@ -15,7 +15,8 @@ class CreateCompaniesTable extends Migration
     {
         Schema::connection('mysql')->create('companies', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('ar_name')->nullable();
+            $table->string('ar_description')->nullable();
             $table->timestamps();
         });
     }
