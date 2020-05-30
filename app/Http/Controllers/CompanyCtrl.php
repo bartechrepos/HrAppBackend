@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Standalone\Branch;
+use App\Standalone\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use stdClass;
@@ -16,7 +18,37 @@ class CompanyCtrl extends Controller
     public function addCompany(Request $request)
     {
         // GET APP MODE
-        echo env('APP_MODE','');
+        $app_mode = env('APP_MODE','');
+        if($app_mode == 'standalone') {
+            $company = new Company();
+            $company->ar_name = $request->ar_name;
+            $company->save();
+        }
+    }
+
+    public function addBranch(Request $request)
+    {
+        // GET APP MODE
+        $app_mode = env('APP_MODE','');
+        if($app_mode == 'standalone') {
+            $branch = new Branch();
+            $branch->company_id = $request->company_id;
+            $branch->ar_name = $request->ar_name;
+            $branch->latitude = $request->latitude;
+            $branch->longitude = $request->longitude;
+            $branch->save();
+        }
+    }
+
+    public function deleteBranch($id)
+    {
+        // GET APP MODE
+        $app_mode = env('APP_MODE','');
+        if($app_mode == 'standalone') {
+            $branch = Branch::findOrFail($id);
+            if($branch)
+                $branch->delete();
+        }
     }
 
     /**

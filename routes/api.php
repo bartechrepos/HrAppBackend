@@ -20,8 +20,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('Employees','EmployeeCtrl@index');
 
-Route::post('Company/AddCompany','CompanyCtrl@AddCompany');
+Route::post('Company/AddCompany','CompanyCtrl@addCompany');
+Route::post('Company/AddBranch','CompanyCtrl@addBranch');
 Route::get('Company/Branches','CompanyCtrl@getBranches');
+Route::delete('Company/Branch/{id}','CompanyCtrl@deleteBranch');
 Route::get('Company/AutodetectBranch','CompanyCtrl@autoDetectBranch');
 
 Route::get('APP/Settings','SettingCtrl@index');
