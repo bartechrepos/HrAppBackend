@@ -9,6 +9,7 @@ class SettingCtrl extends Controller
 {
     //
     public function index() {
+        echo 'get AppSetting';
         return AppSetting::all();
     }
 }

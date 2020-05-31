@@ -18,7 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('Employees','EmployeeCtrl@index');
+// Protected route
+Route::get('Employees','EmployeeCtrl@index')->middleware('auth:api');
 
 Route::post('Company/AddCompany','CompanyCtrl@addCompany');
 Route::post('Company/AddBranch','CompanyCtrl@addBranch');
@@ -31,3 +32,6 @@ Route::get('APP/Settings','SettingCtrl@index');
 Route::post('HR/Attend','HRCtrl@logAttend');
 Route::post('HR/RequestVacation','HRCtrl@requestVacation');
 Route::get('HR/VacationTypes','HRCtrl@getVacationsTypes');
+
+// Login
+Route::post('login', 'UserCtrl@login');

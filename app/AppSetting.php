@@ -9,4 +9,5 @@ class AppSetting extends Model
     //
     protected $connection = 'mysql';
     protected $table = 'app_setting';
+
 }

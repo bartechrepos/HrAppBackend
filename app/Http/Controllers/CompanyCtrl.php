@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imis\ImisBranch;
 use App\Standalone\Branch;
 use App\Standalone\Company;
 use Illuminate\Http\Request;
@@ -57,20 +58,23 @@ class CompanyCtrl extends Controller
      */
     public function getBranches(Request $request)
     {
-        $results = DB::select(
-            'EXEC SP_Branch_FindAll @CompanyId=:CompanyId ;',
-            [
-                ':CompanyId' => $request->input('company')
-            ]
-        );
-        $collection = collect($results);
-        $mapped = $collection->map(function ($item, $key) {
-            return [
-                'branchNameAr' => $item->ArabicDescription,
-                'dummyLatitude' => '30.055760',
-                'dummyLongitude' => '31.357623'
-            ];
-        });
+        $mapped = [];
+        // GET APP MODE
+        $app_mode = env('APP_MODE','');
+        if($app_mode == 'standalone') {
+            $mapped = Branch::where('company_id',$request->input('company_id'))->get();;
+        }
+        else {
+            $collection = ImisBranch::all('*',$request->input('company_id'));
+            $mapped = $collection->map(function ($item, $key) {
+                return [
+                    'branchNameAr' => $item->ArabicDescription,
+                    'dummyLatitude' => '30.055760',
+                    'dummyLongitude' => '31.357623'
+                ];
+            });
+        }
+
         return response()->json($mapped, 200);
     }
 
