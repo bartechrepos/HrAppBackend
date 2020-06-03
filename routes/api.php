@@ -19,7 +19,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 // Protected route
-Route::get('Employees','EmployeeCtrl@index')->middleware('auth:api');
+Route::get('EmployeesProtected','EmployeeCtrl@index')->middleware('auth:api');
+Route::get('Employees','EmployeeCtrl@index');
 
 Route::post('Company/AddCompany','CompanyCtrl@addCompany');
 Route::post('Company/AddBranch','CompanyCtrl@addBranch');
