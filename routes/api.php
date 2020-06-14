@@ -36,3 +36,6 @@ Route::get('HR/VacationTypes','HRCtrl@getVacationsTypes');
 
 // Login
 Route::post('login', 'UserCtrl@login');
+
+Route::get('Company/Departments','DepartmentCtrl@index');
+Route::post('Company/Department','DepartmentCtrl@addDepartment');
