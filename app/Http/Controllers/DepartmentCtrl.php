@@ -14,7 +14,7 @@ class DepartmentCtrl extends Controller
         // GET APP MODE
         $app_mode = env('APP_MODE','');
         if($app_mode == 'standalone') {
-            $mapped = Department::where()->get();;
+            $mapped = Department::all();
         }
         else {
             $mapped = [];
@@ -23,15 +23,43 @@ class DepartmentCtrl extends Controller
         return response()->json($mapped, 200);
     }
 
-    public function addDepartment(Request $request)
+    public function add(Request $request)
     {
         // GET APP MODE
         $app_mode = env('APP_MODE','');
         if($app_mode == 'standalone') {
-            $branch = new Department();
-            $branch->ar_name = $request->ar_name;
-            $branch->ar_description = $request->ar_description;
-            $branch->save();
+            $department = new Department();
+            $department->ar_name = $request->ar_name;
+            $department->ar_description = $request->ar_description;
+            $department->save();
+        }
+        return response()->json(null, 201);
+    }
+
+    public function update(Request $request, $id)
+    {
+        // GET APP MODE
+        $app_mode = env('APP_MODE','');
+        if($app_mode == 'standalone') {
+            $department = Department::findOrFail($id);
+            if($department) {
+                $department->ar_name = $request->ar_name;
+                $department->save();
+                return $department;
+            }
+        }
+    }
+
+    public function delete($id)
+    {
+        // GET APP MODE
+        $app_mode = env('APP_MODE','');
+        if($app_mode == 'standalone') {
+            $department = Department::findOrFail($id);
+            if($department){
+                $department->delete();
+                return response()->json(null, 204);
+            }
         }
     }
 }

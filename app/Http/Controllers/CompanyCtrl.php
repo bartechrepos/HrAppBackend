@@ -24,6 +24,7 @@ class CompanyCtrl extends Controller
             $company = new Company();
             $company->ar_name = $request->ar_name;
             $company->save();
+            return response()->json(null, 201);
         }
     }
 
@@ -38,6 +39,22 @@ class CompanyCtrl extends Controller
             $branch->latitude = $request->latitude;
             $branch->longitude = $request->longitude;
             $branch->save();
+        }
+    }
+
+    public function updateBranch(Request $request, $id)
+    {
+        // GET APP MODE
+        $app_mode = env('APP_MODE','');
+        if($app_mode == 'standalone') {
+            $branch = Branch::findOrFail($id);
+            if($branch) {
+                $branch->ar_name = $request->ar_name;
+                $branch->latitude = $request->latitude;
+                $branch->longitude = $request->longitude;
+                $branch->save();
+                return $branch;
+            }
         }
     }
 
