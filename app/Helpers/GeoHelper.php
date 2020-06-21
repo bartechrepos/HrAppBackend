@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 if (!function_exists('distance')) {
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     /*::                                                                         :*/
@@ -47,5 +49,18 @@ if (!function_exists('distance')) {
                 return $miles;
             }
         }
+    }
+}
+
+
+if (!function_exists('timeToH')) {
+    function timeToH($date) {
+        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('H:i:s');
+    }
+}
+
+if (!function_exists('timeToD')) {
+    function timeToD($date) {
+        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d');
     }
 }

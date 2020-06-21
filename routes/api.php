@@ -22,6 +22,7 @@ Route::post('company','CompanyCtrl@addCompany');
 //* Task 2020-06-21 api endpoints *//
 
 Route::get('employees','EmployeeCtrl@index');
+Route::get('employee/{id}','EmployeeCtrl@get');
 Route::post('employee','EmployeeCtrl@add');
 Route::delete('employee/{id}','EmployeeCtrl@delete');
 Route::put('employee/{id}','EmployeeCtrl@update');
@@ -45,7 +46,10 @@ Route::get('vacation_types','HRCtrl@getVacationsTypes');
 
 Route::post('pushin','InoutCtrl@pushin');
 Route::post('pushout','InoutCtrl@pushout');
+Route::get('get_emp_inouts','InoutCtrl@getEmpInouts');
+
 Route::post('push_clear_today','InoutCtrl@pushClearToday');
+Route::get('push_get_today','InoutCtrl@getEmpTodayInouts');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

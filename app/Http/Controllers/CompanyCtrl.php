@@ -79,7 +79,7 @@ class CompanyCtrl extends Controller
         // GET APP MODE
         $app_mode = env('APP_MODE','');
         if($app_mode == 'standalone') {
-            $mapped = Branch::where('company_id',$request->input('company_id'))->get();;
+            $mapped = Branch::where('company_id',$request->input('company_id'))->get();
         }
         else {
             $collection = ImisBranch::all('*',$request->input('company_id'));
