@@ -1,11 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Standalone;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Employee extends Model
 {
     //
-    protected $table = 'TBL_HR_EmployeeMasterFile';
+    protected $connection = 'mysql';
 }

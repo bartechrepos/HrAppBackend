@@ -16,11 +16,16 @@ use Illuminate\Support\Facades\Route;
 
 // Protected route
 Route::get('employees_protected','EmployeeCtrl@index')->middleware('auth:api');
-Route::get('employees','EmployeeCtrl@index');
 
 Route::post('company','CompanyCtrl@addCompany');
 
-//* Task 2020-06-18 standard api *//
+//* Task 2020-06-21 api endpoints *//
+
+Route::get('employees','EmployeeCtrl@index');
+Route::post('employee','EmployeeCtrl@add');
+Route::delete('employee/{id}','EmployeeCtrl@delete');
+Route::put('employee/{id}','EmployeeCtrl@update');
+
 Route::get('branches','CompanyCtrl@getBranches');
 Route::post('branch','CompanyCtrl@addBranch');
 Route::delete('branch/{id}','CompanyCtrl@deleteBranch');
@@ -38,7 +43,9 @@ Route::post('attend','HRCtrl@logAttend');
 Route::post('request_vacation','HRCtrl@requestVacation');
 Route::get('vacation_types','HRCtrl@getVacationsTypes');
 
-
+Route::post('pushin','InoutCtrl@pushin');
+Route::post('pushout','InoutCtrl@pushout');
+Route::post('push_clear_today','InoutCtrl@pushClearToday');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

@@ -44,6 +44,7 @@ class DepartmentCtrl extends Controller
             $department = Department::findOrFail($id);
             if($department) {
                 $department->ar_name = $request->ar_name;
+                $department->ar_description = $request->ar_description;
                 $department->save();
                 return $department;
             }
