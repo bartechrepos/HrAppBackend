@@ -17,7 +17,7 @@ class InoutCtrl extends Controller
         if(env('APP_MODE','') == 'standalone') {
             $inOutRecord = new Inout();
             $inOutRecord->employee_id = $request->employee_id;
-            $inOutRecord->push_time = $request->time? $request->time : Carbon::today()->toDateString() ;
+            $inOutRecord->push_time = $request->time? $request->time : Carbon::now() ;
             $inOutRecord->push = $inout;
             $inOutRecord->save();
         }

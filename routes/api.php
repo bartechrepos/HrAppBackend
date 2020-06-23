@@ -19,7 +19,11 @@ Route::get('employees_protected','EmployeeCtrl@index')->middleware('auth:api');
 
 Route::post('company','CompanyCtrl@addCompany');
 
-//* Task 2020-06-21 api endpoints *//
+//* Task 2020-06-23 api endpoints *//
+
+Route::get('request_types','RequestTypeCtrl@index');
+Route::post('request_type','RequestTypeCtrl@add');
+Route::put('request_type/{id}','RequestTypeCtrl@update');
 
 Route::get('employees','EmployeeCtrl@index');
 Route::get('employee/{id}','EmployeeCtrl@get');
