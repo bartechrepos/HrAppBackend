@@ -16,6 +16,9 @@ class EditRequestTypesTable extends Migration
         //
         Schema::connection('mysql')->table('request_types', function (Blueprint $table) {
             $table->softDeletes();
+            $table->unsignedBigInteger('to_dep_id');
+        });
+        Schema::connection('mysql')->table('request_types', function (Blueprint $table) {
             $table->foreign('to_dep_id')->references('id')->on('departments');
         });
     }

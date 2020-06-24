@@ -33,6 +33,7 @@ class RequestTypeCtrl extends Controller
             $requestType->ar_description = $request->ar_description;
             $requestType->en_name = $request->en_name;
             $requestType->en_description = $request->en_description;
+            $requestType->to_dep_id = $request->to_dep_id;
             $requestType->save();
         }
         return response()->json(null, 201);
@@ -49,8 +50,22 @@ class RequestTypeCtrl extends Controller
                 $requestType->ar_description = $request->ar_description;
                 $requestType->en_name = $request->en_name;
                 $requestType->en_description = $request->en_description;
+                $requestType->to_dep_id = $request->to_dep_id;
                 $requestType->save();
                 return $requestType;
+            }
+        }
+    }
+
+    public function delete($id)
+    {
+        // GET APP MODE
+        $app_mode = env('APP_MODE','');
+        if($app_mode == 'standalone') {
+            $requestType = RequestType::findOrFail($id);
+            if($requestType){
+                $requestType->delete();
+                return response()->json(null, 204);
             }
         }
     }

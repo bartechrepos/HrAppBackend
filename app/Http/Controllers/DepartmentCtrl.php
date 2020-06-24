@@ -31,6 +31,8 @@ class DepartmentCtrl extends Controller
             $department = new Department();
             $department->ar_name = $request->ar_name;
             $department->ar_description = $request->ar_description;
+            $department->en_name = $request->en_name;
+            $department->en_description = $request->en_description;
             $department->save();
         }
         return response()->json(null, 201);
@@ -45,6 +47,8 @@ class DepartmentCtrl extends Controller
             if($department) {
                 $department->ar_name = $request->ar_name;
                 $department->ar_description = $request->ar_description;
+                $department->en_name = $request->en_name;
+                $department->en_description = $request->en_description;
                 $department->save();
                 return $department;
             }
