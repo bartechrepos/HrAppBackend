@@ -19,8 +19,6 @@ Route::get('employees_protected','EmployeeCtrl@index')->middleware('auth:api');
 
 Route::post('company','CompanyCtrl@addCompany');
 
-
-
 Route::get('request_types','RequestTypeCtrl@index');
 Route::post('request_type','RequestTypeCtrl@add');
 Route::put('request_type/{id}','RequestTypeCtrl@update');
@@ -63,8 +61,31 @@ Route::get('get_emp_inouts','InoutCtrl@getEmpInouts');
 Route::post('push_clear_today','InoutCtrl@pushClearToday');
 Route::get('push_get_today','InoutCtrl@getEmpTodayInouts');
 
+// IMIS Scanner
+Route::post('Scanner/login','ImisScannerCtrl@login');
+Route::post('Scanner/header_guid','ImisScannerCtrl@transHeaderGUID');
+Route::get('Scanner/store_trans_types','ImisScannerCtrl@getStoreTransactionsTypes');
+Route::get('Scanner/sdelivery_types','ImisScannerCtrl@getSalesDeliveryTypes');
+Route::get('Scanner/stock_count_types','ImisScannerCtrl@getStockCountTpes');
+Route::get('Scanner/good_receipt_types','ImisScannerCtrl@getGoodReceiptTypes');
+Route::post('Scanner/post_codes','ImisScannerCtrl@postCodes');
+
+Route::get('Scanner/RFIDLog','ImisScannerCtrl@getScannerLogNotAcknowledge');
+Route::post('Scanner/update_acknowledge','ImisScannerCtrl@updateAcknowledge');
+Route::post('Scanner/random_theft_log','ImisScannerCtrl@generateRandomTheftLog');
+
+// Imis's
+Route::get('imis_branches','CompanyCtrl@getImisBranches');
+Route::get('imis_warehouses','ImisWarehouseCtrl@index');
+
+// Panasonic Proxy
+// Route::post('ManageAccount/Login','PanaProxyCtrl@login');
+Route::post('Proxy/SendSMS','PanaProxyCtrl@SendSMS');
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 // Login
 Route::post('login', 'UserCtrl@login');
+Route::post('users', 'UserCtrl@register');
+Route::get('checkauth', 'UserCtrl@checkUser')->middleware('auth:api');

@@ -38,6 +38,8 @@ class EmpRequestCtrl extends Controller
             $empRequest->employee_id = $request->employee_id;
             $empRequest->request_type_id = $request->request_type_id;
             $empRequest->to_dep_id = $request->to_dep_id;
+            $empRequest->from_date = $request->from_date;
+            $empRequest->to_date = $request->to_date;
             $empRequest->save();
         }
         return response()->json(null, 201);
@@ -51,6 +53,7 @@ class EmpRequestCtrl extends Controller
             $empRequest = EmpRequest::findOrFail($id);
             if($request) {
                 $empRequest->request_status_id = $request->request_status_id;
+                $empRequest->response = $request->response;
                 $empRequest->save();
                 return $empRequest;
             }

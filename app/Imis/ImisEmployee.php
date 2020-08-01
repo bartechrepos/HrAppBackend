@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Imis;;
+namespace App\Imis;
 
 use Illuminate\Database\Eloquent\Model;
 

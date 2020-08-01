@@ -95,6 +95,19 @@ class CompanyCtrl extends Controller
         return response()->json($mapped, 200);
     }
 
+    public function getImisBranches(Request $request)
+    {
+        $mapped = [];
+        $collection = ImisBranch::all('*',$request->input('company_id'));
+        $mapped = $collection->map(function ($item, $key) {
+            return [
+                'ID' => $item->ID,
+                'branchNameAr' => $item->ArabicDescription,
+            ];
+        });
+        return response()->json($mapped, 200);
+    }
+
     /**
      * INPUT
      * company: companyID
