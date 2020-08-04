@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Imis\ImisEmpUser;
 use App\Imis\ImisItemView;
 use App\Imis\ImisUser;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Twilio\Rest\Client as TwilloClient;
 
 class ImisScannerCtrl extends Controller
 {
@@ -28,7 +30,87 @@ class ImisScannerCtrl extends Controller
         //return var_export($data[0], true);
     }
 
-    public function getScannerLogNotAcknowledge(Request $request)
+    public function getOTP(Request $request){
+        $user = ImisEmpUser::where('Mobile',$request->mobile)->first();
+        if($user) {
+            $rand_otp= mt_rand(2000,9000);
+            $user->Internal = $rand_otp;
+            $user->save();
+            $account_sid = 'ACa111e434f70ec0010d5019a67c9c1908';
+            $auth_token = "bbc654f762bed40091c3438abebbbdc6";
+            $twilio_number = "+18442324681";
+
+            $client = new TwilloClient($account_sid, $auth_token);
+            $client->messages->create(
+                // Where to send a text message (your cell phone?)
+                $request->mobile ,
+                array(
+                    'from' => $twilio_number,
+                    'body' => 'Your Code is : '.$rand_otp
+                )
+            );
+
+            return response()->json( [] , 200);
+        } else
+            return response()->json( [] , 204);
+    }
+
+    public function loginOTP(Request $request){
+        $user = ImisEmpUser::where('Mobile',$request->mobile)->where('Internal',$request->otp)->first();
+        if($user) {
+            return response()->json( $user , 200);
+        } else
+            return response()->json( [] , 204);
+    }
+
+    public function getRFIDLogAll(Request $request){
+        //$results = DB::select('EXEC SP_RFIDScannerLog_FindAll @Company= :Company;',
+        $sql = <<<EOD
+SELECT DISTINCT TOP (20)
+[Company],
+[Tag],
+[ItemId],
+[SalesInvoiceId],
+[CashTrxId],
+[PurchaseInvoiceId],
+[Status],
+[Acknowledge],
+FORMAT(CreatedDate, 'MM-dd-yyyy HH:mm') AS CreatedDate
+    FROM [TBL_RFIDScannerLog]
+    WHERE [Deleted] = 0
+    AND [Status] = :Status
+    AND [Company] = :Company Order By CreatedDate Desc ;
+EOD;
+        $results = DB::select($sql, [
+            ':Company' => $request->company,
+            ':Status' => $request->status,
+        ]);
+        $collection = collect($results);
+        $mapped = $collection->map(function($item, $key) {
+            $itemModel = ImisItemView::where('GUID',$item->ItemId)->first();
+            //return var_export($itemModel[0], true);
+            if($itemModel)
+                return [
+                    //'GUID'=> $item->GUID,
+                    'Tag' => $item->Tag,
+                    'Acknowledge' => $item->Acknowledge,
+                    'Status'=> $item->Status,
+                    'ItemId'=> $item->ItemId,
+                    'CreatedDate'=> $item->CreatedDate,
+                    'SalesInvoiceId'=> $item->SalesInvoiceId,
+                    'CashTrxId'=> $item->CashTrxId,
+                    'PurchaseInvoiceId'=> $item->PurchaseInvoiceId,
+                    'ArabicDescription' => $itemModel->ArabicDescription,
+                    'Code' => $itemModel->Code,
+                    'ItemImage' => 'http://13.90.214.197:8081/hrback/public/api/Scanner/item_image/'.$item->ItemId.'.png'
+                ];
+            else
+                return ['GUID' => $item->GUID];
+        });
+        return response()->json($mapped , 200);
+    }
+
+    public function getRFIDLogNotAcknowledge(Request $request)
     {
         $results = DB::select('EXEC SP_RFIDScannerLog_FindAll_NotAcknowledge @Company= :Company;',
         [
@@ -38,15 +120,20 @@ class ImisScannerCtrl extends Controller
         $mapped = $collection->map(function($item, $key) {
             $itemModel = ImisItemView::where('GUID',$item->ItemId)->first();
             //return var_export($itemModel[0], true);
-            if($itemModel)
+            if($itemModel && $item->Status == 1)
                 return [
-                    'GUID'=> $item->GUID,
+                    //'GUID'=> $item->GUID,
                     'Tag' => $item->Tag,
+                    'Acknowledge' => $item->Acknowledge,
                     'Status'=> $item->Status,
                     'ItemId'=> $item->ItemId,
+                    'CreatedDate'=> $item->CreatedDate,
+                    'SalesInvoiceId'=> $item->SalesInvoiceId,
+                    'CashTrxId'=> $item->CashTrxId,
+                    'PurchaseInvoiceId'=> $item->PurchaseInvoiceId,
                     'ArabicDescription' => $itemModel->ArabicDescription,
                     'Code' => $itemModel->Code,
-                    'ItemImage' => pack('H*',$itemModel->ItemImage)
+                    'ItemImage' => 'http://13.90.214.197:8081/hrback/public/api/Scanner/item_image/'.$item->ItemId.'.png'
                 ];
             else
                 return ['GUID' => $item->GUID];
@@ -54,21 +141,36 @@ class ImisScannerCtrl extends Controller
         return response()->json($mapped , 200);
     }
 
+    public function getItemImage($ItemId)
+    {
+        $itemModel = ImisItemView::where('GUID',$ItemId)->first();
+        return response()->make($itemModel->ItemImage, 200,['Content-Type'=>'image/png']);
+    }
+
     public function generateRandomTheftLog(){
         $results = DB::select('SELECT TOP 1 GUID FROM View_RPT_ItemsData ORDER BY NEWID()');
         $itemId = $results[0]->GUID;
-        $results = DB::statement(' insert into TBL_RFIDScannerLog (Company, GUID, ItemId, Status) Values(1, :GUID, :ItemId, 1) ;',
+        $results = DB::statement(' insert into TBL_RFIDScannerLog (Company, GUID, ItemId, Status, Tag) Values(1, :GUID, :ItemId, 1, :Tag ) ;',
         [
             ':ItemId' => $itemId,
             ':GUID' => $itemId."101",
+            ':Tag' => "1234"
         ]);
         return response()->json(null , 200);
     }
 
     public function updateAcknowledge(Request $request) {
+        /*
         $results = DB::statement(' update TBL_RFIDScannerLog set Acknowledge = 1 where GUID= :GUID;',
         [
             ':GUID' => $request->GUID,
+        ]);
+        */
+        $results = DB::statement('EXEC SP_RFIDScannerLog_UpdateAcknowledge @Tag= :Tag, @CreatedDate= :CreatedDate, @UpdatedBy= :UpdatedBy, @UpdateMacNo= :UpdateMacNo', [
+            ':Tag' => $request->Tag,
+            ':CreatedDate' => $request->CreatedDate,
+            ':UpdatedBy' => $request->UpdatedBy,
+            ':UpdateMacNo' => 0,
         ]);
         return response()->json(null , 200);
     }

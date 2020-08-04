@@ -70,9 +70,13 @@ Route::get('Scanner/stock_count_types','ImisScannerCtrl@getStockCountTpes');
 Route::get('Scanner/good_receipt_types','ImisScannerCtrl@getGoodReceiptTypes');
 Route::post('Scanner/post_codes','ImisScannerCtrl@postCodes');
 
-Route::get('Scanner/RFIDLog','ImisScannerCtrl@getScannerLogNotAcknowledge');
+Route::get('Scanner/RFIDLog','ImisScannerCtrl@getRFIDLogNotAcknowledge');
+Route::get('Scanner/RFIDLogAll','ImisScannerCtrl@getRFIDLogAll');
 Route::post('Scanner/update_acknowledge','ImisScannerCtrl@updateAcknowledge');
+Route::post('Scanner/get_otp','ImisScannerCtrl@getOTP');
+Route::post('Scanner/login_otp','ImisScannerCtrl@loginOTP');
 Route::post('Scanner/random_theft_log','ImisScannerCtrl@generateRandomTheftLog');
+Route::get('Scanner/item_image/{ItemId}.png','ImisScannerCtrl@getItemImage');
 
 // Imis's
 Route::get('imis_branches','CompanyCtrl@getImisBranches');
