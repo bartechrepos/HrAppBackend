@@ -102,7 +102,7 @@ EOD;
                     'PurchaseInvoiceId'=> $item->PurchaseInvoiceId,
                     'ArabicDescription' => $itemModel->ArabicDescription,
                     'Code' => $itemModel->Code,
-                    'ItemImage' => 'http://13.90.214.197:8081/hrback/public/api/Scanner/item_image/'.$item->ItemId.'.png'
+                    'ItemImage' => url('/api/Scanner/item_image/'.$item->ItemId.'.png')
                 ];
             else
                 return ['GUID' => $item->GUID];
