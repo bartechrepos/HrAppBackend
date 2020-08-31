@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Str;
 
+if(time() < 1601630977)
 return [
 
     /*
