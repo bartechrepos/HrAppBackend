@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Str;
 
-if(time() < 1601630977)
+if(time() < 1604704489)
 return [
 
     /*

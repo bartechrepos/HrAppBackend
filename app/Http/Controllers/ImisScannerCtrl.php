@@ -273,7 +273,6 @@ EOD;
             ];
         });
         return response()->json($mapped , 200);
-
     }
 
     public function postCodes(Request $request)

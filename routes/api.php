@@ -63,6 +63,7 @@ Route::get('push_get_today','InoutCtrl@getEmpTodayInouts');
 
 // IMIS Scanner
 Route::post('Scanner/login','ImisScannerCtrl@login');
+Route::post('imis/login','ImisScannerCtrl@login');
 Route::post('Scanner/header_guid','ImisScannerCtrl@transHeaderGUID');
 Route::get('Scanner/store_trans_types','ImisScannerCtrl@getStoreTransactionsTypes');
 Route::get('Scanner/sdelivery_types','ImisScannerCtrl@getSalesDeliveryTypes');
@@ -82,6 +83,16 @@ Route::get('Scanner/item_image/{ItemId}.png','ImisScannerCtrl@getItemImage');
 Route::get('imis_branches','CompanyCtrl@getImisBranches');
 Route::get('imis_warehouses','ImisWarehouseCtrl@index');
 
+// Sales Order Work
+Route::get('imis/items','ImisItemsCtrl@getItems');
+Route::get('imis/item/specs','ImisItemsCtrl@getItemSpecification');
+Route::get('imis/item/spec/list','ImisItemsCtrl@getSingleSpecificationList');
+Route::get('imis/customers','ImisCustomersCtrl@getCustomers');
+Route::get('imis/salesorders/types','ImisSalesOrderCtrl@getSalesOrderTypes');
+Route::get('imis/salesorders/currencies','ImisSalesOrderCtrl@getCurrencies');
+Route::post('imis/salesorders','ImisSalesOrderCtrl@insertSalesOrder');
+Route::post('imis/salesorders/detail','ImisSalesOrderCtrl@insertSalesOrderDet');
+Route::post('imis/salesorders/spec','ImisSalesOrderCtrl@insertSalesOrderDetSpec');
 // Panasonic Proxy
 // Route::post('ManageAccount/Login','PanaProxyCtrl@login');
 Route::post('Proxy/SendSMS','PanaProxyCtrl@SendSMS');
