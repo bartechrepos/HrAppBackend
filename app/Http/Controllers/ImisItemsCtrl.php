@@ -17,6 +17,28 @@ class ImisItemsCtrl extends Controller
             return [
                 'ArabicDescription' => $item->ArabicDescription,
                 'GUID' => $item->GUID,
+                'Img' => $item->DetailLine1,
+                'UOMID' => $item->UOMID,
+                'UOMArabicDescription' => $item->UOMArabicDescription,
+                'Code' => $item->Code,
+                'DefaultSalePrice' => $item->DefaultSalePrice,
+            ];
+        });
+        return response()->json($mapped, 200);
+    }
+
+    public function getItemById(Request $request)
+    {
+        $mapped = [];
+
+        $collection = ImisItem::getSingle($request);
+        $mapped = $collection->map(function ($item, $key) {
+            return [
+                'ArabicDescription' => $item->ArabicDescription,
+                'GUID' => $item->GUID,
+                'UOMID' => $item->UOMID,
+                'Code' => $item->Code,
+                'DefaultSalePrice' => $item->DefaultSalePrice,
             ];
         });
         return response()->json($mapped, 200);

@@ -21,6 +21,17 @@ class ImisItem extends Model
         return collect($results);
     }
 
+    public static function getSingle($request) {
+        $results = DB::select(
+            'EXEC SP_Items_FindSingle @Company=:Company , @GUID=:GUID ;',
+            [
+                ':Company' => 1,
+                ':GUID' => $request->GUID
+            ]
+        );
+        return collect($results);
+    }
+
     public static function getItemspcifications($columns = array('*'),$GUID) {
         $results = DB::select(
             'EXEC SP_Items_FindSingle @GUID=:GUID ;',

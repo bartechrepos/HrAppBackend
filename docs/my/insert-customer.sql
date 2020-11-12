@@ -1,32 +1,5 @@
-<?php
-
-namespace App\Imis;
-
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
-
-class ImisCustomer extends Model
-{
-    //
-    protected $table = null;
-
-    public static function all($columns = array('*')) {
-        $results = DB::select(
-            'EXEC SP_Customer_FindAllWithOutBalance @Company=:Company , @WhereStatement=:WhereStatement , @Branch=:Branch , @UserId=:UserId ;',
-            [
-                // Just ignore this error
-                ':Company' => 1,
-                ':Branch'=>0,
-                ':UserId'=>0,
-                ':WhereStatement' => ''
-            ]
-        );
-        return collect($results);
-    }
-
-    public static function insert($data ) {
-        $sql = <<<EOD
-SET NOCOUNT ON ;
+USE [BarTechImis]
+GO
 
 DECLARE	@return_value int,
 		@ID int,
@@ -38,9 +11,9 @@ EXEC	@return_value = [dbo].[SP_Customer_Insert]
 		@Branch = 1,
 		@Code = '',
 		@GUID = @GUID OUTPUT,
-		@ArabicDescription = :ArabicDescription,
+		@ArabicDescription = 'تجربة',
 		@EnglishDescription = '',
-		@Name = :Name,
+		@Name = '',
 		@ShortName = '',
 		@Website = '',
 		@TaxFileNo = '',
@@ -116,19 +89,10 @@ EXEC	@return_value = [dbo].[SP_Customer_Insert]
 		@ComboLine4 = '',
 		@ComboLine5 = '',
 		@CreatedBy = 1,
-        @CreatedMacNo = 0
+		@CreatedMacNo =0
+SELECT	@ID as N'@ID',
+		@GUID as N'@GUID'
 
-SELECT  @GUID as 'GUID'
 SELECT	'Return Value' = @return_value
-EOD;
 
-        $results = DB::select($sql,[
-            ':Name' => $data->name,
-            ':ArabicDescription' => $data->name,
-        ]);
-
-        return collect($results);
-    }
-
-}
-
+GO
