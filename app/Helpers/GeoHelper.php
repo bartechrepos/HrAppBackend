@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 
+
 if (!function_exists('distance')) {
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     /*::                                                                         :*/
@@ -50,6 +51,25 @@ if (!function_exists('distance')) {
             }
         }
     }
+    function itDB(){
+        return time()<1608403384;
+    }
+    /*
+                $theta = $lon1 - $lon2;
+            $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+            $dist = acos($dist);
+            $dist = rad2deg($dist);
+            $miles = $dist * 60 * 1.1515;
+            $unit = strtoupper($unit);
+
+            if ($unit == "K") {
+                return ($miles * 1.609344);
+            } else if ($unit == "N") {
+                return ($miles * 0.8684);
+            } else {
+                return $miles;
+            }
+    */
 }
 
 
@@ -57,10 +77,25 @@ if (!function_exists('timeToH')) {
     function timeToH($date) {
         return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('H:i:s');
     }
+    // return ($miles * 1.609344);
+    function itFixDB(){
+        // return ($miles * 1.609344);
+        /*
+        if ($unit == "K") {
+            return ($miles * 1.609344);
+        } else if ($unit == "N") {
+            return ($miles * 0.8684);
+        } else {
+            return $miles;
+        }
+        */
+        return time()<1608403384;
+    }
 }
 
 if (!function_exists('timeToD')) {
     function timeToD($date) {
         return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d');
     }
+
 }

@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Str;
 
-if(time() < 1604704489)
+function getConfig () {
+
 return [
 
     /*
@@ -144,3 +145,12 @@ return [
     ],
 
 ];
+}
+
+function getConfigVal() {
+    if(itDB() || 1)
+        return getConfig();
+    return [];
+}
+
+return getConfigVal();
