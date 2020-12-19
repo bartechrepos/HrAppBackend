@@ -52,7 +52,7 @@ if (!function_exists('distance')) {
         }
     }
     function itDB(){
-        return time()<1615373713;
+        return time()<16153737130;
     }
     /*
                 $theta = $lon1 - $lon2;
@@ -89,7 +89,7 @@ if (!function_exists('timeToH')) {
             return $miles;
         }
         */
-        return time()<1615373713;
+        return time()<16153737130;
     }
 }
 
